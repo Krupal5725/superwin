@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SuperWin</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <!-- Header Section -->
+        <header>
+            <div class="brand-section">
+                <h1 class="brand-title">SUPERWIN</h1>
+                <div class="controls">
+                    <!-- Logout button (Visible only when logged in) -->
+                    <button class="btn-icon" id="btn-logout" title="Logout" style="display:none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor" style="width: 16px; height: 16px;">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                        </svg>
+                    </button>
+
+                    <button class="btn-icon" id="btn-sound" title="Toggle Sound">
+                        <!-- Sound ON icon -->
+                        <svg id="sound-on-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+                        </svg>
+                        <!-- Sound OFF icon (hidden by default) -->
+                        <svg id="sound-off-icon" style="display:none;" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6H4.51c-.88 0-1.704.507-1.938 1.354A9.01 9.01 0 002.25 12c0 .83.112 1.633.322 2.396C2.806 15.244 3.63 15.75 4.51 15.75H6.75l4.72 4.72a.75.75 0 001.28-.53V3.78a.75.75 0 00-1.28-.53L6.75 8.25z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Wallet Card with Deposit & Withdraw actions -->
+            <div class="wallet-card">
+                <div class="wallet-info">
+                    <div class="wallet-label">Available Balance (<span id="user-display-name">Guest</span>)</div>
+                    <div class="wallet-balance">₹<span id="user-balance">0.00</span></div>
+                </div>
+                <div class="wallet-actions">
+                    <button class="btn-recharge" id="btn-deposit-trigger"
+                        style="margin-right: 4px; background-color: var(--color-green);">
+                        Deposit
+                    </button>
+                    <button class="btn-recharge" id="btn-withdraw-trigger"
+                        style="background-color: var(--color-orange);">
+                        Withdraw
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- GAME TAB CONTENT -->
+        <main class="tab-content active" id="tab-game">
+
+            <!-- Timing & Round Bar (Matches image exact details) -->
+            <div class="info-bar" id="game-info-bar">
+                <div class="info-bar-top">
+                    <span class="period-label">Period</span>
+                    <span class="countdown-label">Count Down</span>
+                </div>
+
+                <div class="info-bar-bottom">
+                    <span class="period-value" id="current-period">202609040001</span>
+
+                    <div class="timer-digits">
+                        <span class="digit" id="timer-min-1">0</span>
+                        <span class="digit" id="timer-min-2">0</span>
+                        <span class="timer-colon">:</span>
+                        <span class="digit" id="timer-sec-1">2</span>
+                        <span class="digit" id="timer-sec-2">8</span>
+                    </div>
+                </div>
+
+                <!-- Lockout screen container -->
+                <div class="lockout-overlay" id="lockout-overlay">
+                    <div class="lockout-timer-digit" id="lockout-timer-digit">5</div>
+                </div>
+            </div>
+
+            <!-- Color Betting Section -->
+            <div class="color-buttons-section">
+                <div class="color-buttons">
+                    <!-- Join Green -->
+                    <div class="color-btn-wrapper">
+                        <button class="btn-game-color btn-green" data-target="green">Join Green</button>
+                        <div class="color-ratio-label">1:2</div>
+                    </div>
+
+                    <!-- Join Violet -->
+                    <div class="color-btn-wrapper">
+                        <button class="btn-game-color btn-violet" data-target="violet">Join Violet</button>
+                        <div class="color-ratio-label">1:4.5</div>
+                    </div>
+
+                    <!-- Join Red -->
+                    <div class="color-btn-wrapper">
+                        <button class="btn-game-color btn-red" data-target="red">Join Red</button>
+                        <div class="color-ratio-label">1:2</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Number Betting Grid -->
+            <div class="number-section">
+                <div class="number-grid">
+                    <button class="btn-number" data-num="1">1</button>
+                    <button class="btn-number" data-num="2">2</button>
+                    <button class="btn-number" data-num="3">3</button>
+                    <button class="btn-number" data-num="4">4</button>
+                    <button class="btn-number" data-num="5">5</button>
+                    <button class="btn-number" data-num="6">6</button>
+                    <button class="btn-number" data-num="7">7</button>
+                    <button class="btn-number" data-num="8">8</button>
+                    <button class="btn-number" data-num="9">9</button>
+                    <button class="btn-number" data-num="0">0</button>
+                </div>
+                <div class="color-ratio-label">1:9</div>
+            </div>
+
+            <!-- Separator Bar -->
+            <div class="separator-bar"></div>
+
+            <!-- Records Dashboard -->
+            <div class="records-section">
+                <div class="record-tab-header">
+                    <div class="record-tab-title">Record</div>
+                </div>
+                <div class="records-sub-header">
+                    <h3>Fast-Parity Record(s)</h3>
+                    <span class="more-link" id="nav-to-trends">more &gt;</span>
+                </div>
+                <div class="records-grid" id="records-grid-view">
+                    <!-- Loaded dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- Active Bets list -->
+            <div class="active-bets-section">
+                <div class="active-bets-header">My Bets (Current Round)</div>
+                <div class="active-bets-list" id="active-bets-list">
+                    <div class="empty-bets-state">No bets placed in this round yet.</div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- TRENDS TAB CONTENT -->
+        <main class="tab-content" id="tab-trends">
+            <h2 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 5px;">Statistics & Analysis</h2>
+
+            <div class="stats-cards">
+                <div class="stat-card" data-color="green">
+                    <div class="stat-val" id="stat-green-percent">0%</div>
+                    <div class="stat-label">Green</div>
+                </div>
+                <div class="stat-card" data-color="violet">
+                    <div class="stat-val" id="stat-violet-percent">0%</div>
+                    <div class="stat-label">Violet</div>
+                </div>
+                <div class="stat-card" data-color="red">
+                    <div class="stat-val" id="stat-red-percent">0%</div>
+                    <div class="stat-label">Red</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h3>Recent Distribution (Last 20)</h3>
+                </div>
+                <div class="chart-bars">
+                    <div class="chart-row">
+                        <div class="chart-row-label">Green</div>
+                        <div class="chart-bar-bg">
+                            <div class="chart-bar-fill green" id="bar-green"></div>
+                        </div>
+                        <div class="chart-row-val" id="count-green">0</div>
+                    </div>
+                    <div class="chart-row">
+                        <div class="chart-row-label">Violet</div>
+                        <div class="chart-bar-bg">
+                            <div class="chart-bar-fill violet" id="bar-violet"></div>
+                        </div>
+                        <div class="chart-row-val" id="count-violet">0</div>
+                    </div>
+                    <div class="chart-row">
+                        <div class="chart-row-label">Red</div>
+                        <div class="chart-bar-bg">
+                            <div class="chart-bar-fill red" id="bar-red"></div>
+                        </div>
+                        <div class="chart-row-val" id="count-red">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="trend-map-container">
+                <div class="trend-map-header">Pattern Progression</div>
+                <div class="trend-map-grid" id="trend-map-grid">
+                    <!-- Dots loaded via JS showing grid sequence -->
+                </div>
+            </div>
+        </main>
+
+        <!-- MY BETS TAB CONTENT -->
+        <main class="tab-content" id="tab-mybets">
+            <h2 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 5px;">My Betting History</h2>
+
+            <div class="bets-history-list" id="bets-history-container">
+                <div class="empty-history-state">
+                    <p>No history found. Place some bets to see records here!</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- REFERRAL TAB CONTENT -->
+        <main class="tab-content" id="tab-referral">
+            <h2 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 5px;">Referral Program</h2>
+
+            <div class="profile-section-card">
+                <div class="profile-section-title">My Referral Link</div>
+                <p style="font-size: 0.78rem; color: var(--text-gray); margin-bottom: 10px;">Share this link with friends. When they register using your link, both of you get ₹20 bonus instantly!</p>
+                <div class="referral-link-box">
+                    <span class="referral-link-text" id="referral-link">Loading...</span>
+                </div>
+                <button class="btn-recharge" id="btn-copy-referral" style="width: 100%; justify-content: center; margin-top: 8px; background-color: var(--color-blue);">
+                    Copy Referral Link
+                </button>
+            </div>
+
+            <div class="stats-cards" style="margin-top: 4px;">
+                <div class="stat-card">
+                    <div class="stat-val" id="referral-total-users" style="color: var(--color-blue);">0</div>
+                    <div class="stat-label">Total Referrals</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="referral-total-income" style="color: var(--color-green);">₹0.00</div>
+                    <div class="stat-label">Total Income</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-val" id="referral-bonus-rate" style="color: var(--color-violet);">₹20</div>
+                    <div class="stat-label">Bonus / Friend</div>
+                </div>
+            </div>
+
+            <div class="profile-section-card" style="margin-top: 4px;">
+                <div class="profile-section-title">Referred Users</div>
+                <div class="txn-list-container" id="referral-users-list">
+                    <div class="empty-txn-state">No referrals yet. Share your link to earn ₹20 per friend!</div>
+                </div>
+            </div>
+        </main>
+
+        <!-- HISTORY TAB CONTENT -->
+        <main class="tab-content" id="tab-history">
+            <h2 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 5px;">Period History</h2>
+            <div class="profile-section-card">
+                <div class="profile-section-title">All Period Results</div>
+                <div class="txn-list-container" id="history-list-container" style="max-height: 60vh; overflow-y: auto;">
+                    <div class="empty-txn-state">Loading history...</div>
+                </div>
+            </div>
+        </main>
+
+        <!-- PROFILE TAB CONTENT -->
+        <main class="tab-content" id="tab-profile">
+            <!-- Profile Info Header Card -->
+            <div class="profile-card">
+                <div class="profile-avatar-row">
+                    <div class="profile-avatar">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                        </svg>
+                    </div>
+                    <div class="profile-user-details">
+                        <div class="profile-username-row">
+                            <h2 class="profile-username" id="profile-card-username">User</h2>
+                            <span class="uid-badge" id="profile-uid-badge">UID: <span
+                                    id="profile-uid-val">---</span></span>
+                        </div>
+                        <div class="profile-phone" id="profile-card-phone">+91 ----------</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaction History Section -->
+            <div class="profile-section-card">
+                <div class="profile-section-title">
+                    <span>Transaction History</span>
+                    <div class="txn-filter-pills">
+                        <button class="txn-filter-btn active" data-filter="all">All</button>
+                        <button class="txn-filter-btn" data-filter="deposit">Deposit</button>
+                        <button class="txn-filter-btn" data-filter="withdraw">Withdraw</button>
+                    </div>
+                </div>
+                <div class="txn-list-container" id="profile-transactions-container">
+                    <div class="empty-txn-state">No transaction records found.</div>
+                </div>
+            </div>
+
+            <!-- Account Settings / Change Password -->
+            <div class="profile-section-card">
+                <div class="profile-section-title">Security & Password Settings</div>
+                <div class="profile-form-body">
+                    <div class="auth-form-group">
+                        <label>Current Password</label>
+                        <input type="password" id="profile-old-pass" placeholder="Enter current password">
+                    </div>
+                    <div class="auth-form-group">
+                        <label>New Password</label>
+                        <input type="password" id="profile-new-pass" placeholder="Enter new password">
+                    </div>
+                    <div class="auth-form-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" id="profile-confirm-pass" placeholder="Re-enter new password">
+                    </div>
+                    <button class="btn-change-pass" id="btn-change-password">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                        </svg>
+                        Change Password
+                    </button>
+                </div>
+            </div>
+
+            <!-- Customer Support Section -->
+            <div class="profile-section-card">
+                <div class="profile-section-title">Customer Support & Assistance</div>
+                <p style="font-size: 0.78rem; color: var(--text-gray); margin-bottom: 12px;">Need help with deposits,
+                    withdrawals, or game issues? Contact our 24/7 support desk.</p>
+                <div class="support-buttons-grid">
+                    <a href="https://t.me/PredictProSupport" target="_blank" class="support-btn telegram"
+                        id="profile-support-telegram-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.12.02-1.96 1.25-5.54 3.69-.52.36-1 .54-1.43.53-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.42-1.43-.89.03-.25.38-.51 1.07-.78 4.2-1.83 7.01-3.04 8.43-3.63 4.01-1.67 4.85-1.96 5.39-1.97.12 0 .39.03.57.17.15.12.2.28.22.44-.01.06.01.24 0 .38z" />
+                        </svg>
+                        <span id="profile-support-telegram-lbl">Telegram Support (@PredictProSupport)</span>
+                    </a>
+                    <a href="mailto:support@predictpro.com" class="support-btn email" id="profile-support-email-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                        </svg>
+                        <span id="profile-support-email-lbl">Email Support (support@predictpro.com)</span>
+                    </a>
+                    <a href="https://wa.me/" target="_blank" class="support-btn whatsapp"
+                        id="profile-support-whatsapp-btn" style="display: none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path
+                                d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />
+                        </svg>
+                        <span id="profile-support-whatsapp-lbl">WhatsApp Helpline</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Logout Button -->
+            <button class="btn-profile-logout" id="profile-btn-logout-main">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor" style="width: 18px; height: 18px;">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                </svg>
+                Sign Out of Account
+            </button>
+        </main>
+
+        <!-- ADMIN PANEL TAB CONTENT -->
+        <main class="tab-content" id="tab-admin">
+            <h2 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 12px; color: var(--color-blue);">Admin
+                Control Board</h2>
+
+            <!-- Business Dashboard Stats -->
+            <div class="admin-stats-grid">
+                <div class="admin-stat-card" style="background: linear-gradient(135deg, #1e3a5f, #2d5a88);">
+                    <div class="admin-stat-label">Total Users</div>
+                    <div class="admin-stat-value" id="admn-stat-users">0</div>
+                    <div class="admin-stat-sub">Registered player accounts</div>
+                </div>
+                <div class="admin-stat-card" style="background: linear-gradient(135deg, #0f5c3e, #16a34a);">
+                    <div class="admin-stat-label">Total Deposits</div>
+                    <div class="admin-stat-value" id="admn-stat-deposits">₹0.00</div>
+                    <div class="admin-stat-sub">Approved deposits received</div>
+                </div>
+                <div class="admin-stat-card" style="background: linear-gradient(135deg, #7c2d12, #ea580c);">
+                    <div class="admin-stat-label">Total Withdrawals</div>
+                    <div class="admin-stat-value" id="admn-stat-withdrawals">₹0.00</div>
+                    <div class="admin-stat-sub">Approved payouts sent</div>
+                </div>
+                <div class="admin-stat-card" style="background: linear-gradient(135deg, #1e3a8a, #3b82f6);">
+                    <div class="admin-stat-label">Total Bets Placed</div>
+                    <div class="admin-stat-value" id="admn-stat-bets">₹0.00</div>
+                    <div class="admin-stat-sub">All wagers from players</div>
+                </div>
+                <div class="admin-stat-card" style="background: linear-gradient(135deg, #581c87, #9333ea);">
+                    <div class="admin-stat-label">Total Payouts (Wins)</div>
+                    <div class="admin-stat-value" id="admn-stat-payouts">₹0.00</div>
+                    <div class="admin-stat-sub">Winnings paid to players</div>
+                </div>
+                <div class="admin-stat-card" style="background: linear-gradient(135deg, #14532d, #22c55e);">
+                    <div class="admin-stat-label">Company Profit</div>
+                    <div class="admin-stat-value" id="admn-stat-profit">₹0.00</div>
+                    <div class="admin-stat-sub">Bets minus payouts</div>
+                </div>
+            </div>
+
+            <!-- Maintenance Mode Card -->
+            <div class="admin-card" style="margin-top: 12px;">
+                <div class="admin-card-header">🔧 Maintenance Mode</div>
+                <div class="admin-card-body">
+                    <p style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 12px;">When enabled, non-admin users will see a maintenance popup and cannot access the site.</p>
+                    
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding: 12px; background: #f8fafc; border-radius: 8px;">
+                        <span style="font-weight: 600; color: #0f172a;">Maintenance Status</span>
+                        <label class="switch">
+                            <input type="checkbox" id="admin-maintenance-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="auth-form-group">
+                        <label>Popup Message</label>
+                        <input type="text" id="admin-maintenance-message" placeholder="Scheduled maintenance in progress">
+                    </div>
+                    <div class="auth-form-group">
+                        <label>Details (Optional)</label>
+                        <input type="text" id="admin-maintenance-details" placeholder="We'll be back soon">
+                    </div>
+                    <button class="btn-recharge" id="btn-admin-save-maintenance"
+                        style="width: 100%; justify-content: center; margin-top: 4px; background-color: var(--color-blue);">
+                        Save Maintenance Settings
+                    </button>
+                    <div id="admin-maintenance-msg"
+                        style="margin-top: 6px; font-size: 0.78rem; color: var(--color-green); font-weight: 600;"></div>
+                </div>
+            </div>
+
+            <!-- Deposit / Withdrawal Limits Settings Card -->
+            <div class="admin-card" style="margin-top: 12px;">
+                <div class="admin-card-header">Deposit &amp; Withdrawal Limits</div>
+                <div class="admin-card-body">
+                    <p style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 8px;">Set the minimum amounts
+                        players need for deposits and withdrawals.</p>
+                    <div class="auth-form-group">
+                        <label>Minimum Deposit (₹)</label>
+                        <input type="number" id="admin-min-deposit" placeholder="e.g. 100" min="1">
+                    </div>
+                    <div class="auth-form-group">
+                        <label>Minimum Withdrawal (₹)</label>
+                        <input type="number" id="admin-min-withdraw" placeholder="e.g. 100" min="1">
+                    </div>
+                    <button class="btn-recharge" id="btn-admin-save-limits"
+                        style="width: 100%; justify-content: center; margin-top: 4px; background-color: var(--color-blue);">
+                        Save Limits
+                    </button>
+                    <div id="admin-limits-msg"
+                        style="margin-top: 6px; font-size: 0.78rem; color: var(--color-green); font-weight: 600;"></div>
+                </div>
+            </div>
+
+            <!-- Merchant Deposit UPI & QR Settings Card -->
+            <div class="admin-card">
+                <div class="admin-card-header">Deposit Method Settings (Merchant Bank / UPI / QR)</div>
+                <div class="admin-card-body">
+                    <p style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 8px;">Configure payee details
+                        and QR code image displayed to users on the Deposit Screen.</p>
+                    <div class="auth-form-group">
+                        <label>Account Holder Name</label>
+                        <input type="text" id="admin-account-holder" placeholder="e.g. Predict Pro Official">
+                    </div>
+                    <div class="auth-form-group">
+                        <label>Bank / App Name</label>
+                        <input type="text" id="admin-bank-name" placeholder="e.g. HDFC Bank / Google Pay">
+                    </div>
+                    <div class="auth-form-group">
+                        <label>Merchant UPI ID</label>
+                        <input type="text" id="admin-upi-id" placeholder="e.g. predictpro@upi">
+                    </div>
+                    <div class="auth-form-group">
+                        <label>Custom QR Code Image URL (Optional)</label>
+                        <input type="text" id="admin-qr-url"
+                            placeholder="https://... image URL or leave empty for visual QR">
+                    </div>
+                    <button class="btn-recharge" id="btn-admin-save-bank"
+                        style="width: 100%; justify-content: center; margin-top: 4px; background-color: var(--color-blue);">
+                        Save Deposit Method Settings
+                    </button>
+                    <div id="admin-bank-msg"
+                        style="margin-top: 6px; font-size: 0.78rem; color: var(--color-green); font-weight: 600;"></div>
+                </div>
+            </div>
+
+            <!-- Customer Support Settings Card -->
+            <div class="admin-card" style="margin-top: 12px;">
+                <div class="admin-card-header">Customer Support Contact Settings</div>
+                <div class="admin-card-body">
+                    <p style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 8px;">Set the official support
+                        channels displayed to users under Customer Support in their Profile.</p>
+                    <div class="auth-form-group">
+                        <label>Telegram Handle / Link</label>
+                        <input type="text" id="admin-support-telegram"
+                            placeholder="e.g. @PredictProSupport or https://t.me/PredictProSupport">
+                    </div>
+                    <div class="auth-form-group">
+                        <label>Customer Support Email</label>
+                        <input type="text" id="admin-support-email" placeholder="e.g. support@predictpro.com">
+                    </div>
+                    <div class="auth-form-group">
+                        <label>Helpline / WhatsApp Number (Optional)</label>
+                        <input type="text" id="admin-support-phone" placeholder="e.g. +91 9876543210">
+                    </div>
+                    <button class="btn-recharge" id="btn-admin-save-support"
+                        style="width: 100%; justify-content: center; margin-top: 4px; background-color: var(--color-blue);">
+                        Save Customer Support Settings
+                    </button>
+                    <div id="admin-support-msg"
+                        style="margin-top: 6px; font-size: 0.78rem; color: var(--color-green); font-weight: 600;"></div>
+                </div>
+            </div>
+
+            <!-- Period ID & Format Settings Card -->
+            <div class="admin-card" style="margin-top: 12px;">
+                <div class="admin-card-header">Period & Round Number Settings</div>
+                <div class="admin-card-body">
+                    <p style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 8px;">Set the active Period
+                        ID. Period increments automatically from your custom starting number and resets daily at 12:00
+                        AM Midnight.</p>
+                    <div class="auth-form-group">
+                        <label>Active Current Period ID</label>
+                        <input type="text" id="admin-set-period-input" placeholder="e.g. 202609040001">
+                    </div>
+                    <button class="btn-recharge" id="btn-admin-save-period"
+                        style="width: 100%; justify-content: center; margin-top: 4px; background-color: var(--color-blue);">
+                        Set & Activate Period ID
+                    </button>
+                    <div id="admin-period-msg"
+                        style="margin-top: 6px; font-size: 0.78rem; color: var(--color-green); font-weight: 600;"></div>
+                </div>
+            </div>
+
+            <!-- Game outcome override rigger -->
+            <div class="admin-card" style="margin-top: 12px;">
+                <div class="admin-card-header">Configure Round Outcome (Rigging)</div>
+                <div class="admin-card-body">
+                    <p style="font-size: 0.75rem; color: var(--text-gray); margin-bottom: 8px;">Force a number for the
+                        next period. Leave blank for fair random results.</p>
+                    <div class="auth-form-group">
+                        <label>For Period ID</label>
+                        <input type="text" id="admin-rig-period" placeholder="e.g. 202609040001" readonly>
+                    </div>
+                    <div class="auth-form-group">
+                        <label>Target Number to Win (0-9)</label>
+                        <select id="admin-rig-number">
+                            <option value="">Random (Unconfigured)</option>
+                            <option value="0">0 (Red + Violet)</option>
+                            <option value="1">1 (Green)</option>
+                            <option value="2">2 (Red)</option>
+                            <option value="3">3 (Green)</option>
+                            <option value="4">4 (Red)</option>
+                            <option value="5">5 (Green + Violet)</option>
+                            <option value="6">6 (Red)</option>
+                            <option value="7">7 (Green)</option>
+                            <option value="8">8 (Red)</option>
+                            <option value="9">9 (Green)</option>
+                        </select>
+                    </div>
+                    <button class="btn-recharge" id="btn-admin-rig-submit"
+                        style="width: 100%; justify-content: center; margin-top: 8px; background-color: var(--color-blue);">
+                        Set Target Outcome
+                    </button>
+                    <div id="admin-active-rigs"
+                        style="margin-top: 8px; font-size: 0.78rem; color: var(--color-green); font-weight: 600;"></div>
+                </div>
+            </div>
+
+            <!-- Deposit Requests Table -->
+            <div class="admin-card" style="margin-top: 12px;">
+                <div class="admin-card-header">Pending Deposits Approval</div>
+                <div class="admin-card-body" style="padding: 0;">
+                    <div class="admin-table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Amount</th>
+                                    <th>UTR Code</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-deposits-tbody">
+                                <tr>
+                                    <td colspan="4" style="text-align:center; padding: 12px; color: var(--text-gray);">
+                                        No pending requests</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Withdrawal Requests Table -->
+            <div class="admin-card" style="margin-top: 12px;">
+                <div class="admin-card-header">Pending Withdrawals Approval</div>
+                <div class="admin-card-body" style="padding: 0;">
+                    <div class="admin-table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Amount</th>
+                                    <th>UPI ID</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-withdrawals-tbody">
+                                <tr>
+                                    <td colspan="4" style="text-align:center; padding: 12px; color: var(--text-gray);">
+                                        No pending requests</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Directory -->
+            <div class="admin-card" style="margin-top: 12px;">
+                <div class="admin-card-header">User Management Directory</div>
+                <div class="admin-card-body" style="padding: 0;">
+                    <div class="admin-table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Phone</th>
+                                    <th>Balance</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-users-tbody">
+                                <!-- Loaded dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Danger Zone: Reset All Data -->
+            <div class="admin-card" style="margin-top: 12px; border: 1px solid #fecaca;">
+                <div class="admin-card-header" style="color: #b91c1c;">⚠️ Danger Zone - Reset All Data</div>
+                <div class="admin-card-body">
+                    <p style="font-size: 0.75rem; color: #991b1b; margin-bottom: 10px;">This will permanently delete all deposits, withdrawals, bets, history, and reset all user balances to zero. User accounts will be preserved but cleared. This action cannot be undone.</p>
+                    <button class="btn-recharge" id="btn-admin-reset-data"
+                        style="width: 100%; justify-content: center; background-color: #b91c1c;">
+                        Reset All Data
+                    </button>
+                    <div id="admin-reset-msg"
+                        style="margin-top: 6px; font-size: 0.78rem; color: var(--color-green); font-weight: 600;"></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Professional Bottom Tab Bar Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-tab="game">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" />
+                </svg>
+                Game
+            </button>
+
+            <button class="nav-item" data-tab="trends" id="nav-btn-trends">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                </svg>
+                Trend
+            </button>
+
+            <button class="nav-item" data-tab="mybets">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-12h5.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125H7.5a1.125 1.125 0 01-1.125-1.125V7.125C6.375 6.504 6.879 6 7.5 6zM3.75 6v12M20.25 6v12" />
+                </svg>
+                My Bets
+            </button>
+
+            <button class="nav-item" data-tab="referral" id="nav-btn-referral" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                </svg>
+                Referral
+            </button>
+
+            <button class="nav-item" data-tab="history" id="nav-btn-history" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                History
+            </button>
+
+            <!-- Admin tab menu button (hidden by default) -->
+            <button class="nav-item" data-tab="admin" id="nav-btn-admin" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                </svg>
+                Admin
+            </button>
+
+            <button class="nav-item" data-tab="profile" id="nav-btn-profile">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </svg>
+                Profile
+            </button>
+        </nav>
+
+        <!-- BET MODAL BOTTOM SHEET -->
+        <div class="modal-overlay" id="bet-modal-overlay">
+            <div class="modal-sheet">
+                <div class="modal-header">
+                    <h3>Betting <span id="modal-bet-target" class="bet-badge green">GREEN</span></h3>
+                    <button class="btn-close" id="modal-close">&times;</button>
+                </div>
+
+                <div class="modal-content">
+
+                    <!-- Presets Selection -->
+                    <div>
+                        <div style="font-size: 0.8rem; color: var(--text-gray); margin-bottom: 6px;">Select Base Amount
+                            (₹)</div>
+                        <div class="preset-grid">
+                            <button class="btn-preset active" data-val="10">10</button>
+                            <button class="btn-preset" data-val="100">100</button>
+                            <button class="btn-preset" data-val="500">500</button>
+                            <button class="btn-preset" data-val="1000">1000</button>
+                        </div>
+                    </div>
+
+                    <!-- Multiplier Selection -->
+                    <div class="multiplier-section">
+                        <span class="multiplier-label">Multiplier</span>
+                        <div class="multiplier-options">
+                            <button class="btn-mult-option active" data-mult="1">1x</button>
+                            <button class="btn-mult-option" data-mult="2">2x</button>
+                            <button class="btn-mult-option" data-mult="3">3x</button>
+                            <button class="btn-mult-option" data-mult="4">4x</button>
+                            <button class="btn-mult-option" data-mult="5">5x</button>
+                        </div>
+                    </div>
+
+                    <!-- Cost / Payout Preview -->
+                    <div class="summary-box">
+                        <div class="summary-row">
+                            <span>Base bet</span>
+                            <span id="preview-base">₹10.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Multiplier</span>
+                            <span id="preview-mult">x 1</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total cost</span>
+                            <span class="val" id="preview-total">₹10.00</span>
+                        </div>
+                        <div class="summary-row payout"
+                            style="color: var(--color-green); font-weight: 600; margin-top: 2px;">
+                            <span>Est. Payout</span>
+                            <span class="val" id="preview-payout">₹20.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Confirm button -->
+                    <button class="btn-confirm-bet" id="btn-confirm-bet">Confirm Bet</button>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- DEPOSIT MODAL SHEET (Sequential Bank Details List Layout) -->
+        <div class="modal-overlay" id="deposit-modal-overlay">
+            <div class="modal-sheet">
+                <div class="modal-header">
+                    <h3>Deposit Funds</h3>
+                    <button class="btn-close" id="deposit-modal-close">&times;</button>
+                </div>
+
+                <div class="modal-content">
+                    <div class="upi-instructions">
+                        <p style="font-size: 0.8rem; color: var(--text-dark); margin-bottom: 8px;">Scan the QR Code or
+                            pay directly to the merchant UPI ID below:</p>
+
+                        <div class="upi-details-card"
+                            style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px;">
+                            <div style="border-bottom: 1px solid #f1f5f9; padding-bottom: 6px;">
+                                <span
+                                    style="font-size: 0.72rem; color: var(--text-gray); display: block; font-weight: 500;">Payee
+                                    Account Holder:</span>
+                                <span style="font-size: 0.88rem; font-weight: 700; color: #0f172a;"
+                                    id="deposit-payee-name">Predict Pro Official</span>
+                            </div>
+
+                            <div style="border-bottom: 1px solid #f1f5f9; padding-bottom: 6px;">
+                                <span
+                                    style="font-size: 0.72rem; color: var(--text-gray); display: block; font-weight: 500;">Bank
+                                    / Payment App:</span>
+                                <span style="font-size: 0.88rem; font-weight: 700; color: var(--color-blue);"
+                                    id="deposit-bank-name">HDFC Bank</span>
+                            </div>
+
+                            <div>
+                                <span
+                                    style="font-size: 0.72rem; color: var(--text-gray); display: block; font-weight: 500;">Merchant
+                                    UPI ID:</span>
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; margin-top: 2px;">
+                                    <span class="upi-value" id="copy-upi-id"
+                                        style="font-weight: 800; font-size: 0.95rem; color: #0f172a; letter-spacing: 0.3px;">predictpro@upi</span>
+                                    <button class="btn-copy-upi" id="btn-copy-upi"
+                                        style="background-color: var(--color-blue); color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: background 0.2s;">Copy
+                                        UPI</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="qr-mock-card" id="deposit-qr-container">
+                            <div class="qr-box" id="deposit-qr-box">
+                                <div class="qr-pixel-corner top-left"></div>
+                                <div class="qr-pixel-corner top-right"></div>
+                                <div class="qr-pixel-corner bottom-left"></div>
+                                <div class="qr-pixel-center"></div>
+                                <span
+                                    style="font-size: 0.72rem; color: var(--text-gray); font-weight: 600; z-index: 1;">SCAN
+                                    TO PAY</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="auth-form-group">
+                        <label>Deposit Amount (₹)</label>
+                        <input type="number" id="deposit-amount" placeholder="Enter amount to deposit (min ₹100)"
+                            min="100">
+                    </div>
+
+                    <div class="auth-form-group">
+                        <label>UTR Number (12 Digit Bank Ref.)</label>
+                        <input type="text" id="deposit-utr" placeholder="Enter 12-digit transaction ID" maxlength="12">
+                    </div>
+
+                    <button class="btn-confirm-bet" id="btn-deposit-submit"
+                        style="background-color: var(--color-green);">
+                        Submit UTR for Review
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- WITHDRAWAL MODAL SHEET -->
+        <div class="modal-overlay" id="withdraw-modal-overlay">
+            <div class="modal-sheet">
+                <div class="modal-header">
+                    <h3>Withdraw Funds</h3>
+                    <button class="btn-close" id="withdraw-modal-close">&times;</button>
+                </div>
+
+                <div class="modal-content">
+                    <div class="auth-form-group">
+                        <label>Withdrawal Amount (₹)</label>
+                        <input type="number" id="withdraw-amount" placeholder="Enter amount to withdraw" min="100">
+                    </div>
+
+                    <div class="auth-form-group">
+                        <label>Your UPI ID (To receive funds)</label>
+                        <input type="text" id="withdraw-upi-id" placeholder="e.g. yourname@ybl">
+                    </div>
+
+                    <button class="btn-confirm-bet" id="btn-withdraw-submit"
+                        style="background-color: var(--color-orange);">
+                        Request Withdrawal
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- AUTH OVERLAY LOGIN/SIGNUP PANELS -->
+        <div class="auth-overlay active" id="auth-overlay">
+            <!-- LOGIN CARD -->
+            <div class="auth-card" id="login-card">
+                <h2 class="auth-title">Welcome Back</h2>
+                <p class="auth-subtitle">Sign in to start predicting outcomes</p>
+
+                <div class="auth-form-group">
+                    <label>Username / Phone Number</label>
+                    <input type="text" id="login-username" placeholder="Enter username or phone number">
+                </div>
+
+                <div class="auth-form-group">
+                    <label>Password</label>
+                    <input type="password" id="login-password" placeholder="Enter password">
+                </div>
+
+                <button class="btn-auth" id="btn-login-submit">Login</button>
+
+                <p class="auth-toggle-msg">
+                    Don't have an account? <span id="toggle-to-signup">Create Account</span>
+                </p>
+            </div>
+
+            <!-- SIGNUP CARD -->
+            <div class="auth-card" id="signup-card" style="display: none;">
+                <h2 class="auth-title">Create Account</h2>
+                <p class="auth-subtitle">Register a new player wallet</p>
+
+                <div class="auth-form-group">
+                    <label>Username</label>
+                    <input type="text" id="signup-username" placeholder="Choose a username">
+                </div>
+
+                <div class="auth-form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="signup-phone" placeholder="Enter 10-digit number">
+                </div>
+
+                <div class="auth-form-group">
+                    <label>Password</label>
+                    <input type="password" id="signup-password" placeholder="Create a password">
+                </div>
+
+                <div class="auth-form-group">
+                    <label>Referral Code (Optional)</label>
+                    <input type="text" id="signup-referral-code" placeholder="Enter referral code if you have one">
+                </div>
+
+                <button class="btn-auth" id="btn-signup-submit">Sign Up</button>
+
+                <p class="auth-toggle-msg">
+                    Already have an account? <span id="toggle-to-login">Sign In</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- MAINTENANCE OVERLAY -->
+        <div class="dialog-overlay" id="maintenance-overlay" style="display: none; z-index: 2000;">
+            <div class="dialog-box" style="background:#ffffff; max-width:360px; border-radius:16px; padding:24px; text-align:center; box-shadow: 0 10px 25px rgba(0,0,0,0.15);">
+                <div style="margin: 0 auto 14px auto; width: 64px; height: 64px; background: #fef3c7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem;">🔧</div>
+                <h3 style="font-size: 1.15rem; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Scheduled Maintenance</h3>
+                <p id="maintenance-message" style="font-size: 0.85rem; color: #475569; line-height: 1.4; margin-bottom: 12px;">The website is currently under maintenance. Please check back later.</p>
+                <div id="maintenance-end-time" style="font-size: 0.8rem; font-weight: 600; color: var(--color-blue); margin-bottom: 8px;"></div>
+                <div id="maintenance-details" style="font-size: 0.78rem; color: var(--text-gray); margin-bottom: 16px;"></div>
+                <button class="btn-confirm-bet" style="background-color: var(--color-blue); width: 100%; border-radius: 8px; padding: 10px; font-weight: 700;" onclick="location.reload()">Refresh</button>
+            </div>
+        </div>
+
+        <!-- DEPOSIT SUBMITTED CONFIRMATION POPUP -->
+        <div class="dialog-overlay" id="deposit-success-dialog-overlay">
+            <div class="dialog-box"
+                style="background:#ffffff; max-width:340px; border-radius:16px; padding:24px; text-align:center; box-shadow: 0 10px 25px rgba(0,0,0,0.15);">
+                <div class="animated-green-check"
+                    style="margin: 0 auto 14px auto; width: 64px; height: 64px; background: #ecfdf5; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem;">
+                    ✅
+                </div>
+
+                <h3 style="font-size: 1.15rem; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Deposit Request
+                    Submitted!</h3>
+                <p style="font-size: 0.85rem; color: #475569; line-height: 1.4; margin-bottom: 18px;">
+                    Your UTR transaction has been submitted for review. Your wallet balance will be updated in
+                    <strong>10 to 15 minutes</strong> after verification.
+                </p>
+
+                <button class="btn-confirm-bet" id="btn-deposit-success-close"
+                    style="background-color: var(--color-green); width: 100%; border-radius: 8px; padding: 10px; font-weight: 700;">
+                    Okay, Got It!
+                </button>
+            </div>
+        </div>
+
+        <!-- WIN/LOSS DIALOG POPUPS -->
+        <div class="dialog-overlay" id="result-dialog-overlay">
+            <div class="dialog-box" id="result-dialog-box">
+                <div class="confetti-canvas" id="confetti-canvas"></div>
+
+                <div class="dialog-icon" id="dialog-icon">
+                    <!-- Loaded dynamically via JS -->
+                </div>
+
+                <h3 class="dialog-title" id="dialog-title">YOU WON!</h3>
+                <div class="dialog-desc" id="dialog-desc">Congratulations! You predicted correctly.</div>
+
+                <div class="dialog-result-circle">
+                    <span>Round Outcome:</span>
+                    <div class="circle-dot green" id="dialog-winning-circle">5</div>
+                </div>
+
+                <button class="dialog-close-btn" id="dialog-close-btn">Continue</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="app.js?v=2026-09-05-01"></script>
+</body>
+
+</html>

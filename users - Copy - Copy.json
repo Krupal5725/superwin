@@ -1,0 +1,80 @@
+[
+  {
+    "id": "u_admin",
+    "username": "admin",
+    "phone": "9999999999",
+    "password": "admin",
+    "balance": 40,
+    "role": "admin",
+    "referralCode": "REFD56QP",
+    "referralEarnings": 40
+  },
+  {
+    "id": "u_test",
+    "username": "testuser",
+    "phone": "1234567890",
+    "password": "user123",
+    "balance": 0,
+    "role": "user",
+    "referralCode": "REFT7AUA",
+    "referralEarnings": 0,
+    "referrals": [],
+    "referrerId": null
+  },
+  {
+    "id": "u_1788545032346",
+    "username": "Kaisiwowo",
+    "phone": "1234567899",
+    "password": "Krupal",
+    "balance": 0,
+    "role": "user",
+    "referralCode": "REFDMSTQ",
+    "referralEarnings": 0,
+    "referrals": [],
+    "referrerId": null
+  },
+  {
+    "username": "reftest",
+    "phone": "9999999998",
+    "password": "test123",
+    "referralCode": "REFAA8HJ",
+    "referralEarnings": 0,
+    "balance": 0,
+    "referrerId": null,
+    "referrals": []
+  },
+  {
+    "username": "linetest",
+    "phone": "8888888888",
+    "password": "line123",
+    "referralCode": "REFT7R3N",
+    "referralEarnings": 0,
+    "balance": 0,
+    "referrerId": null,
+    "referrals": []
+  },
+  {
+    "id": "u_1788606664519",
+    "username": "Krupal",
+    "phone": "1111111111",
+    "password": "12345",
+    "balance": 0,
+    "role": "user",
+    "referralCode": "REF6SRRC",
+    "referralEarnings": 0,
+    "referrerId": null,
+    "referrals": []
+  },
+  {
+    "id": "u_1788610808617",
+    "username": "krupal",
+    "phone": "2222222222",
+    "password": "22",
+    "balance": 0,
+    "role": "user",
+    "referralCode": "REFBMPZE",
+    "referralEarnings": 0,
+    "referrals": [],
+    "referrerId": null
+  }
+]
